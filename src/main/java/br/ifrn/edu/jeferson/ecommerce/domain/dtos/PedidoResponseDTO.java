@@ -1,5 +1,7 @@
 package br.ifrn.edu.jeferson.ecommerce.domain.dtos;
 
+import java.util.List;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,5 +25,5 @@ public class PedidoResponseDTO {
     private ClienteResponseDTO cliente;
 
     @Schema(description = "Itens do pedido")
-    private ItemPedidoResponseDTO itemPedido;
+    private List<ItemPedidoResponseDTO> itensPedido;
 }

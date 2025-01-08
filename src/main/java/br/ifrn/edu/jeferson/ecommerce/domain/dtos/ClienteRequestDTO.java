@@ -14,6 +14,7 @@ import lombok.Setter;
 @Schema(description = "DTO para requisição de cliente")
 public class ClienteRequestDTO {
     @Schema(description = "Nome do cliente", example = "Jeferson")
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
     @Schema(description = "Email do cliente", example = "jeferson@gmail.com")

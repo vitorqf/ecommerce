@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,4 +32,7 @@ public class ClienteResponseDTO {
 
     @Schema(description = "Pedidos do cliente")
     private PedidoResponseDTO pedido;
+
+    @Schema(description = "Lista de pedidos do cliente")
+    private List<PedidoResponseDTO> itens;
 }
