@@ -76,6 +76,7 @@
             <version>2.2.0</version>
         </dependency>
 
+
         <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -125,6 +126,7 @@
                     </annotationProcessorPaths>
                     <compilerArgs>
                         <arg>-Amapstruct.defaultComponentModel=spring</arg>
+                        <arg>-Amapstruct.verbose=true</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
