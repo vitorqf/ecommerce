@@ -1,5 +1,7 @@
 package br.ifrn.edu.jeferson.ecommerce.domain.dtos;
 
+import java.util.List;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,11 +22,11 @@ public class ProdutoResponseDTO {
     private String descricao;
 
     @Schema(description = "Valor do produto", example = "1000.00")
-    private String valor;
+    private String preco;
 
     @Schema(description = "Quantidade em estoque do produto", example = "10")
     private Integer estoque;
 
-    @Schema(description = "Categoria do produto")
-    private CategoriaResponseDTO categoria;
+    @Schema(description = "Categorias do produto")
+    private List<CategoriaResponseDTO> categorias;
 }

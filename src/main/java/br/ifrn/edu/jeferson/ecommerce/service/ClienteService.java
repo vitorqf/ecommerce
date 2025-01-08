@@ -33,7 +33,7 @@ public class ClienteService {
 
     public List<ClienteResponseDTO> lista(){
         List<Cliente> clientes = clienteRepository.findAll();
-        return clienteMapper.toDTOList (clientes);
+        return clienteMapper.toDTOList(clientes);
     }
 
     public void deletar(Long id) {
