@@ -21,7 +21,4 @@ public class ItemPedidoResponseDTO {
 
     @Schema(description = "Produto do item")
     private ProdutoResponseDTO produto;
-
-    @Schema(description = "Pedido do item")
-    private PedidoResponseDTO pedido;    
 }

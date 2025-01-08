@@ -31,8 +31,5 @@ public class ClienteResponseDTO {
     private EnderecoResponseDTO endereco;
 
     @Schema(description = "Pedidos do cliente")
-    private PedidoResponseDTO pedido;
-
-    @Schema(description = "Lista de pedidos do cliente")
-    private List<PedidoResponseDTO> itens;
+    private List<PedidoResponseDTO> pedidos;
 }

@@ -23,7 +23,7 @@ public class ProdutoResponseDTO {
     private String valor;
 
     @Schema(description = "Quantidade em estoque do produto", example = "10")
-    private Integer quantidadeEstoque;
+    private Integer estoque;
 
     @Schema(description = "Categoria do produto")
     private CategoriaResponseDTO categoria;

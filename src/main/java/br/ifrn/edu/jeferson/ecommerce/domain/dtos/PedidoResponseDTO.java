@@ -16,14 +16,11 @@ public class PedidoResponseDTO {
     private Long id;
 
     @Schema(description = "Valor total do pedido", example = "100.00")
-    private String valorTotal;
+    private String total;
 
     @Schema(description = "Status do pedido", example = "AGUARDANDO")
-    private String statusPedido;
-
-    @Schema(description = "Cliente do pedido")
-    private ClienteResponseDTO cliente;
+    private String status;
 
     @Schema(description = "Itens do pedido")
-    private List<ItemPedidoResponseDTO> itensPedido;
+    private List<ItemPedidoResponseDTO> itens;
 }
