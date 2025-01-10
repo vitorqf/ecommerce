@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.ifrn.edu.jeferson.ecommerce.domain.Categoria;
 import br.ifrn.edu.jeferson.ecommerce.domain.Produto;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoRequestDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoResponseDTO;
 import br.ifrn.edu.jeferson.ecommerce.exception.ResourceNotFoundException;
 import br.ifrn.edu.jeferson.ecommerce.mapper.ProdutoMapper;
+import br.ifrn.edu.jeferson.ecommerce.repository.CategoriaRepository;
 import br.ifrn.edu.jeferson.ecommerce.repository.ProdutoRepository;
 
 @Service
@@ -20,8 +22,17 @@ public class ProdutoService {
     @Autowired
     private ProdutoMapper produtoMapper;
 
+    @Autowired
+    private CategoriaRepository categoriaRepository;
+
+    private List<Categoria> buscarCategoriasPorId(List<Long> categoriaIds) {
+        return categoriaRepository.findAllById(categoriaIds);
+    }
+
     public ProdutoResponseDTO salvar(ProdutoRequestDTO produtoDto) {
         var produto =  produtoMapper.toEntity(produtoDto);
+        var categorias = buscarCategoriasPorId(produtoDto.getCategoriaIds());        
+        produto.setCategorias(categorias);
         produtoRepository.save(produto);
         return produtoMapper.toResponseDTO(produto);
     }

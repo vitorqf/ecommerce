@@ -7,15 +7,19 @@ import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(
+    componentModel = MappingConstants.ComponentModel.SPRING,
+    unmappedTargetPolicy = ReportingPolicy.IGNORE,
+    uses = {ItemPedidoMapper.class}
+)
 public interface PedidoMapper {
     
+    @Mapping(target = "clienteId", source = "cliente.id")
+    @Mapping(target = "status", source = "statusPedido")
     PedidoResponseDTO toResponseDTO(Pedido pedido);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "itens", ignore = true)
-    @Mapping(target = "cliente", ignore = true)
-    @Mapping(target = "dataPedido", ignore = true)
     Pedido toEntity(PedidoRequestDTO dto);
 
     List<PedidoResponseDTO> toDTOList(List<Pedido> pedidos);
@@ -23,7 +27,5 @@ public interface PedidoMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "itens", ignore = true)
-    @Mapping(target = "cliente", ignore = true)
-    @Mapping(target = "dataPedido", ignore = true)
     Pedido updateEntityFromDTO(PedidoRequestDTO dto, @MappingTarget Pedido pedido);
 }

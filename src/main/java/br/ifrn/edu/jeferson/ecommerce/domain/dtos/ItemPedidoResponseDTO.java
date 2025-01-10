@@ -10,15 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Schema(description = "DTO para resposta de item de pedido")
 public class ItemPedidoResponseDTO {
-    @Schema(description = "ID do item de pedido", example = "1")
-    private Long id;
-
     @Schema(description = "Quantidade do item", example = "1")
     private Integer quantidade;
 
-    @Schema(description = "Valor unitário do item", example = "100.00")
-    private String valorUnitario;
-
     @Schema(description = "Produto do item")
-    private ProdutoResponseDTO produto;
+    private ItemPedidoPartialResponseDTO produto;
 }

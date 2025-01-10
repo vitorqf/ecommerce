@@ -1,6 +1,8 @@
 package br.ifrn.edu.jeferson.ecommerce.domain.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,15 +14,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Schema(description = "DTO para requisição de item de pedido")
 public class ItemPedidoRequestDTO {
-    @Schema(description = "Quantidade do item", example = "1")
+    
+    @Schema(description = "O ID do produto desejado", example = "1")
+    @NotNull(message = "O id do produto é obrigatório")
+    private Long produtoId;
+
+    @Schema(description = "A quantidade de itens", example = "1")
+    @NotNull(message = "A quantidade é obrigatória")
+    @Min(value = 1, message = "A quantidade deve ser maior que 0")
     private Integer quantidade;
-
-    @Schema(description = "Valor unitário do item", example = "100.00")
-    private String valorUnitario;
-
-    @Schema(description = "Produto do item")
-    private ProdutoRequestDTO produto;
-
-    @Schema(description = "Pedido do item")
-    private PedidoRequestDTO pedido;
 }

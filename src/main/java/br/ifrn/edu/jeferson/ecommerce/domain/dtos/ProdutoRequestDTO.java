@@ -1,12 +1,14 @@
 package br.ifrn.edu.jeferson.ecommerce.domain.dtos;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,4 +39,9 @@ public class ProdutoRequestDTO {
     @NotNull(message = "A quantidade do produto no estoque é obrigatória")
     @Min(value = 0, message = "Estoque não pode ser negativo")
     private Integer estoque;
+
+
+    @Schema(description = "Lista de ids das categorias do produto", example = "[1, 2]")
+    @NotEmpty(message = "A lista de categorias é obrigatória")
+    private List<Long> categoriaIds;
 }

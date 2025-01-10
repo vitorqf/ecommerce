@@ -1,5 +1,6 @@
 package br.ifrn.edu.jeferson.ecommerce.domain.dtos;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +23,7 @@ public class ProdutoResponseDTO {
     private String descricao;
 
     @Schema(description = "Valor do produto", example = "1000.00")
-    private String preco;
+    private BigDecimal preco;
 
     @Schema(description = "Quantidade em estoque do produto", example = "10")
     private Integer estoque;

@@ -1,15 +1,19 @@
 package br.ifrn.edu.jeferson.ecommerce.mapper;
 
+import java.util.List;
 
 import br.ifrn.edu.jeferson.ecommerce.domain.Cliente;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ClienteRequestDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ClienteResponseDTO;
 import org.mapstruct.*;
 
-import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(
+    componentModel = MappingConstants.ComponentModel.SPRING,
+    unmappedTargetPolicy = ReportingPolicy.IGNORE
+)
 public interface ClienteMapper {
+   
     
     ClienteResponseDTO toResponseDTO(Cliente cliente);
 
