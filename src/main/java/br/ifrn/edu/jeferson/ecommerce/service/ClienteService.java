@@ -3,6 +3,8 @@ package br.ifrn.edu.jeferson.ecommerce.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.ifrn.edu.jeferson.ecommerce.domain.Cliente;
@@ -57,9 +59,11 @@ public class ClienteService {
         return clienteMapper.toResponseDTO(cliente);
     }
 
-    public List<ClienteResponseDTO> lista(){
-        List<Cliente> clientes = clienteRepository.findAll();
-        return clienteMapper.toDTOList(clientes);
+    public Page<ClienteResponseDTO> lista(
+        Pageable pageable
+    ){
+        Page<Cliente> clientes = clienteRepository.findAll(pageable);
+        return clienteMapper.toDTOPage(clientes);
     }
 
     public void deletar(Long id) {

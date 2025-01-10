@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,10 +24,4 @@ public class ClienteResponseDTO {
 
     @Schema(description = "Telefone do cliente", example = "(84) 99999-9999")
     private String telefone;
-
-    @Schema(description = "Endereço do cliente")
-    private EnderecoResponseDTO endereco;
-
-    @Schema(description = "Pedidos do cliente")
-    private List<PedidoResponseDTO> pedidos;
 }

@@ -6,6 +6,7 @@ import br.ifrn.edu.jeferson.ecommerce.domain.Cliente;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ClienteRequestDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ClienteResponseDTO;
 import org.mapstruct.*;
+import org.springframework.data.domain.Page;
 
 
 @Mapper(
@@ -23,6 +24,10 @@ public interface ClienteMapper {
     Cliente toEntity(ClienteRequestDTO dto);
 
     List<ClienteResponseDTO> toDTOList(List<Cliente> clientes);
+
+    default Page<ClienteResponseDTO> toDTOPage(Page<Cliente> clientes) {
+        return clientes.map(this::toResponseDTO);
+    }
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
