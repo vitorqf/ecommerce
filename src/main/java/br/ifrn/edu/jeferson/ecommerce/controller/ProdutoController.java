@@ -1,8 +1,11 @@
 package br.ifrn.edu.jeferson.ecommerce.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoRequestDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoResponseDTO;
@@ -35,8 +39,13 @@ public class ProdutoController {
 
     @Operation(summary = "Listar produtos")
     @GetMapping
-    public ResponseEntity<List<ProdutoResponseDTO>> lista() {
-        return ResponseEntity.ok(produtoService.lista());
+    public ResponseEntity<Page<ProdutoResponseDTO>> lista(
+        @RequestParam(required = false) String nome,
+        @RequestParam(required = false) BigDecimal precoMaiorQue,
+        @RequestParam(required = false) BigDecimal precoMenorQue,
+        Pageable pageable
+    ) {
+        return ResponseEntity.ok(produtoService.lista(pageable, nome, precoMaiorQue, precoMenorQue));
     }
 
     @Operation(summary = "Buscar produto por id")
