@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import br.ifrn.edu.jeferson.ecommerce.domain.dtos.PedidoAtualizarRequestDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.PedidoRequestDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.PedidoResponseDTO;
 import br.ifrn.edu.jeferson.ecommerce.service.PedidoService;
@@ -46,10 +47,10 @@ public class PedidoController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Atualizar um pedido")
-    @PutMapping("/{id}")
-    public ResponseEntity<PedidoResponseDTO> atualizar(@PathVariable Long id, @RequestBody PedidoRequestDTO pedidoDto) {
-        return ResponseEntity.ok(pedidoService.atualizar(id, pedidoDto));
+    @Operation(summary = "Atualizar status de um pedido")
+    @PutMapping("/{id}/status")
+    public ResponseEntity<PedidoResponseDTO> atualizarStatusPedido(@PathVariable Long id, @RequestBody PedidoAtualizarRequestDTO statusPedidoDto) {
+        return ResponseEntity.ok(pedidoService.atualizarStatusPedido(id, statusPedidoDto.getStatusPedido()));
     }
 
     @Operation(summary = "Buscar um pedido por id")

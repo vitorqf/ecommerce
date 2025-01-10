@@ -31,6 +31,12 @@ public class CategoriaService {
     @Autowired
     private ProdutoMapper produtoMapper;
 
+    private void verificaSeTemProduto(Long id) {
+        if (produtoRepository.existsByCategorias_Id(id)) {
+            throw new BusinessException("Não é possível deletar uma categoria que possui produtos associados");
+        }
+    }
+
     public CategoriaResponseDTO salvar(CategoriaRequestDTO categoriaDto) {
         var categoria =  mapper.toEntity(categoriaDto);
 
@@ -51,6 +57,9 @@ public class CategoriaService {
         if (!categoriaRepository.existsById(id)) {
             throw new ResourceNotFoundException("Categoria não encontrada");
         }
+
+        verificaSeTemProduto(id);
+
         categoriaRepository.deleteById(id);
     }
 

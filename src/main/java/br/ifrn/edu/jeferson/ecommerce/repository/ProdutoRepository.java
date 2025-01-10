@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
     List<Produto> findByCategorias_Id(Long id);
+    boolean existsByCategorias_Id(Long id);
 }

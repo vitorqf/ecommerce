@@ -107,13 +107,11 @@ public class PedidoService {
         pedidoRepository.deleteById(id);
     }
 
-    public PedidoResponseDTO atualizar(Long id, PedidoRequestDTO pedidoDto) {
+    public PedidoResponseDTO atualizarStatusPedido(Long id, StatusPedido statusPedido) {
         Pedido pedido = pedidoRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Pedido não encontrado"));
-
-        pedidoMapper.updateEntityFromDTO(pedidoDto, pedido);
-        var pedidoAlterado = pedidoRepository.save(pedido);
-
-        return pedidoMapper.toResponseDTO(pedidoAlterado);
+        pedido.setStatusPedido(statusPedido);
+        pedido = pedidoRepository.save(pedido);
+        return pedidoMapper.toResponseDTO(pedido);
     }
 
     public PedidoResponseDTO buscarPorId(Long id) {
