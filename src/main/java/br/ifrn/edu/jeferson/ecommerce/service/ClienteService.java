@@ -9,6 +9,7 @@ import br.ifrn.edu.jeferson.ecommerce.domain.Cliente;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ClienteRequestDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ClienteResponseDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.PedidoResponseDTO;
+import br.ifrn.edu.jeferson.ecommerce.exception.BusinessException;
 import br.ifrn.edu.jeferson.ecommerce.exception.ResourceNotFoundException;
 import br.ifrn.edu.jeferson.ecommerce.mapper.ClienteMapper;
 import br.ifrn.edu.jeferson.ecommerce.mapper.PedidoMapper;
@@ -25,7 +26,32 @@ public class ClienteService {
     @Autowired
     private PedidoMapper pedidoMapper;
 
+    private void verificaSeCpfJaExiste(String cpf) {
+        if (clienteRepository.existsByCpf(cpf)) {
+            throw new BusinessException(String.format("Cliente com CPF %s já cadastrado", cpf));
+        }
+    }
+
+    private void verificaSeEmailJaExiste(String email) {
+        if (clienteRepository.existsByEmail(email)) {
+            throw new BusinessException(String.format("O email %s já está sendo usado", email));
+        }
+    }
+
+    private void verificaSePossuiPedidos(Long id) {
+        if (clienteRepository.existsByIdAndPedidosIsNotEmpty(id)) {
+            throw new BusinessException("Cliente possui pedidos e não pode ser deletado");
+        }
+    }
+
+    private void validaCliente(ClienteRequestDTO clienteDto) {
+        verificaSeCpfJaExiste(clienteDto.getCpf());
+        verificaSeEmailJaExiste(clienteDto.getEmail());
+    }
+
     public ClienteResponseDTO salvar(ClienteRequestDTO clienteDto) {
+        validaCliente(clienteDto);
+
         var cliente =  clienteMapper.toEntity(clienteDto);
         clienteRepository.save(cliente);
         return clienteMapper.toResponseDTO(cliente);
@@ -40,11 +66,16 @@ public class ClienteService {
         if (!clienteRepository.existsById(id)) {
             throw new ResourceNotFoundException("Cliente não encontrado");
         }
+
+        verificaSePossuiPedidos(id);
+
         clienteRepository.deleteById(id);
     }
 
     public ClienteResponseDTO atualizar(Long id, ClienteRequestDTO clienteDto) {
         Cliente cliente = clienteRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Cliente não encontrado"));
+
+        validaCliente(clienteDto);
 
         clienteMapper.updateEntityFromDTO(clienteDto, cliente);
         var clienteAlterado = clienteRepository.save(cliente);
