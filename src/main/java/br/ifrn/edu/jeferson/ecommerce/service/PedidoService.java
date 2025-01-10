@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.ifrn.edu.jeferson.ecommerce.domain.ItemPedido;
@@ -95,9 +97,11 @@ public class PedidoService {
         return pedidoMapper.toResponseDTO(pedido);
     }
 
-    public List<PedidoResponseDTO> lista(){
-        List<Pedido> pedidos = pedidoRepository.findAll();
-        return pedidoMapper.toDTOList(pedidos);
+    public Page<PedidoResponseDTO> lista(
+        Pageable pageable
+    ){
+        Page<Pedido> pedidos = pedidoRepository.findAll(pageable);
+        return pedidoMapper.toDTOPage(pedidos);
     }
 
     public void deletar(Long id) {

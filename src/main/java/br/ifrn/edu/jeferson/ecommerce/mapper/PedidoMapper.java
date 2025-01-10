@@ -4,6 +4,7 @@ import br.ifrn.edu.jeferson.ecommerce.domain.Pedido;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.PedidoRequestDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.PedidoResponseDTO;
 import org.mapstruct.*;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -23,6 +24,10 @@ public interface PedidoMapper {
     Pedido toEntity(PedidoRequestDTO dto);
 
     List<PedidoResponseDTO> toDTOList(List<Pedido> pedidos);
+
+    default Page<PedidoResponseDTO> toDTOPage(Page<Pedido> pedidos) {
+        return pedidos.map(this::toResponseDTO);
+    }
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
