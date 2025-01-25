@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import br.ifrn.edu.jeferson.ecommerce.domain.Categoria;
 import br.ifrn.edu.jeferson.ecommerce.domain.Produto;
+import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoAtualizarEstoqueRequestDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoRequestDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoResponseDTO;
 import br.ifrn.edu.jeferson.ecommerce.exception.ResourceNotFoundException;
@@ -77,9 +78,9 @@ public class ProdutoService {
         return produtoMapper.toResponseDTO(produto);
     }
 
-    public ProdutoResponseDTO atualizarEstoque(Long id, Integer quantidade) {
+    public ProdutoResponseDTO atualizarEstoque(Long id, ProdutoAtualizarEstoqueRequestDTO quantidade) {
         Produto produto = produtoRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Produto não encontrado"));
-        produto.setEstoque(quantidade);
+        produto.setEstoque(quantidade.getQuantidade());
         var produtoAlterado = produtoRepository.save(produto);
 
         return produtoMapper.toResponseDTO(produtoAlterado);

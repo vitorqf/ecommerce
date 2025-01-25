@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoAtualizarEstoqueRequestDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoRequestDTO;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ProdutoResponseDTO;
 import br.ifrn.edu.jeferson.ecommerce.service.ProdutoService;
@@ -34,6 +36,7 @@ public class ProdutoController {
     ProdutoService produtoService;
 
     @Operation(summary = "Criar um novo produto")
+    @CacheEvict(value = "produtos", allEntries = true)
     @PostMapping
     public ResponseEntity<ProdutoResponseDTO> salvar(@RequestBody ProdutoRequestDTO produtoDto) {
         return ResponseEntity.ok(produtoService.salvar(produtoDto));
@@ -58,21 +61,24 @@ public class ProdutoController {
     }
 
     @Operation(summary = "Deletar produto")
+    @CacheEvict(value = "produtos", allEntries = true)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(Long id) {
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
         produtoService.deletar(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Atualizar produto")
+    @CacheEvict(value = "produtos", allEntries = true)
     @PutMapping("/{id}")
     public ResponseEntity<ProdutoResponseDTO> atualizar(@PathVariable Long id, @RequestBody ProdutoRequestDTO produtoDto) {
         return ResponseEntity.ok(produtoService.atualizar(id, produtoDto));
     }
 
     @Operation(summary = "Atualizar estoque do produto")
+    @CacheEvict(value = "produtos", allEntries = true)
     @PatchMapping("/{id}/estoque")
-    public ResponseEntity<ProdutoResponseDTO> atualizarEstoque(@PathVariable Long id, Integer quantidade) {
+    public ResponseEntity<ProdutoResponseDTO> atualizarEstoque(@PathVariable Long id, @RequestBody ProdutoAtualizarEstoqueRequestDTO quantidade) {
         return ResponseEntity.ok(produtoService.atualizarEstoque(id, quantidade));
     }
 
