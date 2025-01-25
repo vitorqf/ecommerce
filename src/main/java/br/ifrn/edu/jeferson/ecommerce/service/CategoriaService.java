@@ -14,11 +14,15 @@ import br.ifrn.edu.jeferson.ecommerce.repository.ProdutoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @Service
 public class CategoriaService {
+    private static final Logger logger = LoggerFactory.getLogger(CategoriaService.class);
+
     @Autowired
     private CategoriaRepository categoriaRepository;
     @Autowired
@@ -38,6 +42,7 @@ public class CategoriaService {
     }
 
     public CategoriaResponseDTO salvar(CategoriaRequestDTO categoriaDto) {
+        logger.info("Iniciando salvamento de nova categoria");
         var categoria =  mapper.toEntity(categoriaDto);
 
         if (categoriaRepository.existsByNome(categoria.getNome())) {
@@ -45,6 +50,7 @@ public class CategoriaService {
         }
 
         categoriaRepository.save(categoria);
+        logger.info("Categoria salva com sucesso: {}", categoria.getId());
         return mapper.toResponseDTO(categoria);
     }
 

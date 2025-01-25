@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.ifrn.edu.jeferson.ecommerce.domain.Cliente;
 import br.ifrn.edu.jeferson.ecommerce.domain.dtos.ClienteRequestDTO;
@@ -19,6 +21,8 @@ import br.ifrn.edu.jeferson.ecommerce.repository.ClienteRepository;
 
 @Service
 public class ClienteService {
+    private static final Logger logger = LoggerFactory.getLogger(ClienteService.class);
+
     @Autowired
     private ClienteRepository clienteRepository;   
 
@@ -52,10 +56,12 @@ public class ClienteService {
     }
 
     public ClienteResponseDTO salvar(ClienteRequestDTO clienteDto) {
+        logger.info("Iniciando salvamento de novo cliente");
         validaCliente(clienteDto);
 
         var cliente =  clienteMapper.toEntity(clienteDto);
         clienteRepository.save(cliente);
+        logger.info("Cliente salvo com sucesso: {}", cliente.getId());
         return clienteMapper.toResponseDTO(cliente);
     }
 

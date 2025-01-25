@@ -25,9 +25,12 @@ import br.ifrn.edu.jeferson.ecommerce.repository.ItemPedidoRepository;
 import br.ifrn.edu.jeferson.ecommerce.repository.PedidoRepository;
 import br.ifrn.edu.jeferson.ecommerce.repository.ProdutoRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class PedidoService {
+    private static final Logger logger = LoggerFactory.getLogger(PedidoService.class);
     
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -57,6 +60,7 @@ public class PedidoService {
     }
     
     public PedidoResponseDTO salvar(PedidoRequestDTO pedidoDto) {
+        logger.info("Iniciando salvamento de novo pedido");
         var produtosIds = pedidoDto.getProdutosIds();
         var produtos = produtoRepository.findAllById(produtosIds);
 
@@ -94,6 +98,7 @@ public class PedidoService {
         pedido = pedidoRepository.save(pedido);
         itemPedidoRepository.saveAll(itens);
         produtoRepository.saveAll(atualizacaoDeEstoque);
+        logger.info("Pedido salvo com sucesso: {}", pedido.getId());
         return pedidoMapper.toResponseDTO(pedido);
     }
 
