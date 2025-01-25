@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +40,7 @@ public class ProdutoController {
     }
 
     @Operation(summary = "Listar produtos")
+    @Cacheable(value = "produtos", key = "#nome + '-' + #precoMaiorQue + '-' + #precoMenorQue + '-' + #pageable.pageNumber + '-' + #pageable.pageSize")
     @GetMapping
     public ResponseEntity<Page<ProdutoResponseDTO>> lista(
         @RequestParam(required = false) String nome,
@@ -50,7 +53,7 @@ public class ProdutoController {
 
     @Operation(summary = "Buscar produto por id")
     @GetMapping("/{id}")
-    public ResponseEntity<ProdutoResponseDTO> buscarPorId(Long id) {
+    public ResponseEntity<ProdutoResponseDTO> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(produtoService.buscarPorId(id));
     }
 
@@ -63,19 +66,19 @@ public class ProdutoController {
 
     @Operation(summary = "Atualizar produto")
     @PutMapping("/{id}")
-    public ResponseEntity<ProdutoResponseDTO> atualizar(Long id, @RequestBody ProdutoRequestDTO produtoDto) {
+    public ResponseEntity<ProdutoResponseDTO> atualizar(@PathVariable Long id, @RequestBody ProdutoRequestDTO produtoDto) {
         return ResponseEntity.ok(produtoService.atualizar(id, produtoDto));
     }
 
     @Operation(summary = "Atualizar estoque do produto")
     @PatchMapping("/{id}/estoque")
-    public ResponseEntity<ProdutoResponseDTO> atualizarEstoque(Long id, Integer quantidade) {
+    public ResponseEntity<ProdutoResponseDTO> atualizarEstoque(@PathVariable Long id, Integer quantidade) {
         return ResponseEntity.ok(produtoService.atualizarEstoque(id, quantidade));
     }
 
     @Operation(summary = "Listar produtos por categoria")
     @GetMapping("/categoria/{categoriaId}")
-    public ResponseEntity<List<ProdutoResponseDTO>> buscarPorCategoria(Long categoriaId) {
+    public ResponseEntity<List<ProdutoResponseDTO>> buscarPorCategoria(@PathVariable Long categoriaId) {
         return ResponseEntity.ok(produtoService.buscarPorCategoria(categoriaId));
     }
 }
