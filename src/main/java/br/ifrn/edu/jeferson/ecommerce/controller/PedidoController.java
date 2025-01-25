@@ -3,6 +3,7 @@ package br.ifrn.edu.jeferson.ecommerce.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,7 @@ public class PedidoController {
     }
 
     @Operation(summary = "Listar pedidos")
+    @Cacheable(value = "pedidos", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
     @GetMapping
     public ResponseEntity<Page<PedidoResponseDTO>> listar(
         Pageable pageable
@@ -48,7 +50,7 @@ public class PedidoController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         pedidoService.deletar(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Atualizar status de um pedido")

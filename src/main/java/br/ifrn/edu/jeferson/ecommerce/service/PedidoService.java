@@ -1,7 +1,6 @@
 package br.ifrn.edu.jeferson.ecommerce.service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,7 @@ import br.ifrn.edu.jeferson.ecommerce.repository.ClienteRepository;
 import br.ifrn.edu.jeferson.ecommerce.repository.ItemPedidoRepository;
 import br.ifrn.edu.jeferson.ecommerce.repository.PedidoRepository;
 import br.ifrn.edu.jeferson.ecommerce.repository.ProdutoRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class PedidoService {
@@ -55,7 +55,7 @@ public class PedidoService {
             throw new BusinessException("Estoque insuficiente para o produto " + produto.getNome());
         }
     }
-
+    
     public PedidoResponseDTO salvar(PedidoRequestDTO pedidoDto) {
         var produtosIds = pedidoDto.getProdutosIds();
         var produtos = produtoRepository.findAllById(produtosIds);
@@ -104,10 +104,21 @@ public class PedidoService {
         return pedidoMapper.toDTOPage(pedidos);
     }
 
+    @Transactional
     public void deletar(Long id) {
-        if (!pedidoRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Pedido não encontrado");
+        Pedido pedido = pedidoRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException(String.format("Pedido com ID %s não encontrado.", id)));
+        
+        List<ItemPedido> itens = pedido.getItens();
+
+        for (ItemPedido item : itens) {
+            Produto produto = item.getProduto();
+            produto.setEstoque(produto.getEstoque() + item.getQuantidade());
+            produtoRepository.save(produto);
         }
+
+        itemPedidoRepository.deleteAll(itens);
+
         pedidoRepository.deleteById(id);
     }
 
